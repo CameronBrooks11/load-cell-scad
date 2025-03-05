@@ -1,40 +1,25 @@
-// generic load cell
-module load_cell_generator(width, length, height, sensor_dims, load_cell_color = "silver", sensor_color = "white")
+/**
+ * @file load_cell.scad
+ * @brief Generates a load cell from standard sizes.
+ */
+
+include <load_cell_variants.scad>;
+use <load_cell_generator.scad>;
+
+module load_cell(load_cell_name)
 {
 
-    difference()
-    {
-        union()
-        {
-            // main body
-            color(load_cell_color) cube([ length, width, height ], center = true);
+    echo("looking for:", load_cell_name);
+    matches = [for (cell = load_cell_variations) if (cell[0] == load_cell_name) cell[1]];
 
-            // strain gages
-            color(sensor_color) for (dz = [ -height / 2 - sensor_dims[2] / 2, height / 2 + sensor_dims[2] / 2 ])
-                translate([ 0, 0, dz ]) cube([ sensor_dims[0], sensor_dims[1], sensor_dims[2] ], center = true);
+    echo("matches: ", matches);
 
-            // cable routing on one side
-            color(sensor_color) translate([ 7 + 10, width / 2, 0 ]) cube([ 14, 1, height ], center = true);
-        }
+    if (len(matches) == 0)
+        echo("No matches found for:", load_cell_name);
+    else
+        echo("Matches found for:", load_cell_name);
 
-        // center cylindrical cutouts
-        for (dx = [ -4, 4 ])
-            translate([ dx, 0, 0 ]) rotate([ 90, 0, 0 ])
-                cylinder(d = 12.0, h = 20 + width + 1, center = true, $fn = 50);
-
-        // 2 x M5 screw threads
-        for (dx = [ -length / 2 + 5, -length / 2 + 15 ])
-            translate([ dx, 0, 0 ]) cylinder(d = 5.0, h = height + 1, center = true, $fn = 50);
-
-        // 2 x M4 screw threads
-        for (dx = [ length / 2 - 5, length / 2 - 15 ])
-            translate([ dx, 0, 0 ]) cylinder(d = 4.0, h = height + 1, center = true, $fn = 50);
-    }
+    load_cell_generator(cell_dims = matches[0][0], sensor_dims = matches[0][1], center_cutout = matches[0][2],
+                        screw_holes = matches[0][3], side_cuts = matches[0][4]);
 }
 
-test_length = 80;
-test_width = 12.7;
-test_height = 12.7;
-test_sensor_dims = [ 24, 12, 1 ];
-
-load_cell_generator(width = test_width, length = test_length, height = test_height, sensor_dims = test_sensor_dims);
