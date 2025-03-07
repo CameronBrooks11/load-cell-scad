@@ -1,6 +1,6 @@
 // openscad file for example of load cells
 
-use <../src/load_cell.scad>;
+use <../load_cell.scad>;
 
 spacing = 25;
 

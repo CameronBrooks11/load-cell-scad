@@ -6,8 +6,6 @@
 include <src/load_cell_variants.scad>;
 use <src/load_cell_generator.scad>;
 
-use <src/amplifier_boards.scad>;
-
 module load_cell(load_cell_name)
 {
 
@@ -24,4 +22,3 @@ module load_cell(load_cell_name)
     load_cell_generator(cell_dims = matches[0][0], sensor_dims = matches[0][1], center_cutout = matches[0][2],
                         screw_holes = matches[0][3], side_cuts = matches[0][4]);
 }
-

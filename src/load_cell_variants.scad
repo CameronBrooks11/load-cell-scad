@@ -97,7 +97,7 @@ load_cell_variations = [
                 [ 3.0, [ -20, -3 ], [ -20, 3 ] ], // left side (d = 3.0)
                 [ 3.2, [ 20, -3 ], [ 20, 3 ] ]    // right side (d = 3.2)
             ],                                    // screw holes
-            [33, 2]  // length, width // side cuts
+            [ 33, 2 ]                             // length, width // side cuts
         ]
     ],
 ];

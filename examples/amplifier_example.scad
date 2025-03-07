@@ -1,6 +1,6 @@
 // openscad file for example of load cell amp boards
 
-use <../src/amplifier_boards.scad>;
+use <../amplifier_boards.scad>;
 
 spacing = 25;
 
