@@ -5,10 +5,9 @@
 //   [
 //     cell_dims,      // [ width, length, height ]
 //     sensor_dims,    // [ sensor_width, sensor_length, sensor_thickness ]
-//     center_cutout,  // For cylindrical cutouts: [ diameter, [pos1_x, pos1_y], [pos2_x, pos2_y] ]
-//                     // For non‐cylindrical cutouts (e.g. cube), you can use a marker such as [ "cube", [dims...] ]
-//                     // or null if not applicable.
+//     center_cutout,  // [ diameter, [pos1_x, pos1_y], [pos2_x, pos2_y] ]
 //     screw_holes     // A list of one or more screw groups. Each group is [ diameter, [loc A], [loc B] ]
+//     side_cuts       // [ length, width ] // side cuts, optional
 //   ]
 // ]
 
@@ -97,7 +96,7 @@ load_cell_variations = [
                 [ 3.0, [ -20, -3 ], [ -20, 3 ] ], // left side (d = 3.0)
                 [ 3.2, [ 20, -3 ], [ 20, 3 ] ]    // right side (d = 3.2)
             ],                                    // screw holes
-            [ 33, 2 ]                             // length, width // side cuts
+            [ 33, 2 ]                             // side cuts
         ]
     ],
 ];
@@ -122,3 +121,52 @@ load_cell_variations = [
         ]
     ];
     */
+
+/**
+ * Returns the specs for a given load cell.
+ *
+ * @param {string} load_cell_name - Name of the load cell.
+ * @return {[cell_dims], [sensor_dims], [center_cutout], [screw_holes], [side_cuts]} - Specs for the load cell.
+ */
+function get_load_cell_specs(load_cell_name) =
+    let(result = [for (cell = load_cell_variations) if (cell[0] == load_cell_name) cell[1]]) result[0];
+
+/**
+ * Returns the dimensions of the load cell.
+ *
+ * @param {string} load_cell_name - Name of the load cell.
+ * @return {[ width, length, height ]} - Dimensions of the load cell.
+ */
+function get_load_cell_cell_dims(load_cell_name) = get_load_cell_specs(load_cell_name)[0];
+
+/**
+ * Returns the dimensions of the sensor.
+ *
+ * @param {string} load_cell_name - Name of the load cell.
+ * @return {[ sensor_width, sensor_length, sensor_thickness ]} - Dimensions of the sensor.
+ */
+function get_load_cell_sensor_dims(load_cell_name) = get_load_cell_specs(load_cell_name)[1];
+
+/**
+ * Returns the dimensions of the center cutout.
+ *
+ * @param {string} load_cell_name - Name of the load cell.
+ * @return {[ diameter, [pos1_x, pos1_y], [pos2_x, pos2_y] ]} - Dimensions of the center cutout.
+ */
+function get_load_cell_center_cutout(load_cell_name) = get_load_cell_specs(load_cell_name)[2];
+
+/**
+ * Returns the positions of the screw holes.
+ *
+ * @param {string} load_cell_name - Name of the load cell.
+ * @return {[ [ diameter1, [location A1], [location B1] ], ... ]} - Positions of the screw holes.
+ */
+function get_load_cell_screw_holes(load_cell_name) = get_load_cell_specs(load_cell_name)[3];
+
+/**
+ * Returns the dimensions of the side cuts.
+ *
+ * @param {string} load_cell_name - Name of the load cell.
+ * @return {[ length, width ]} - Dimensions of the optional side cuts.
+ */
+function get_load_cell_side_cuts(load_cell_name) = get_load_cell_specs(load_cell_name)[4];
