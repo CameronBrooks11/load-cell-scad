@@ -3,8 +3,10 @@
  * @brief Generates a load cell from standard sizes.
  */
 
-include <load_cell_variants.scad>;
-use <load_cell_generator.scad>;
+include <src/load_cell_variants.scad>;
+use <src/load_cell_generator.scad>;
+
+use <src/amplifier_boards.scad>;
 
 module load_cell(load_cell_name)
 {
