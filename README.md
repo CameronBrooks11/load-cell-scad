@@ -22,7 +22,6 @@ Four library files at the repository root:
 Plus:
 
 - `examples/` – example files demonstrating the load cells and amplifier boards.
-- `archive/` – the original per-variant reference models.
 
 The data files `use` their matching module file, so a consumer only needs to
 `include` the plural (data) file.
