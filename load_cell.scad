@@ -5,10 +5,8 @@
  * (c) 2021 fnh, hendrich@informatik.uni-hamburg.de
  * (c) 2025 ckb, cbrook49@uwo.ca
  *
- * Follows the NopSCADlib vitamin convention: this singular file holds the
- * property accessors and the drawing module; the data lives in the plural
- * `load_cells.scad`, which `use`s this file. Draw a cell by passing a row
- * from that data list, e.g. `load_cell(LC_TAL220)`.
+ * Accessors and drawing module. Variant data is in load_cells.scad.
+ * Draw a cell by passing a row: load_cell(LC_TAL220).
  */
 
 //

@@ -1,5 +1,4 @@
-// Example: all load-cell variants laid out along y.
-// New NopSCADlib-style API: pass a data-row constant from load_cells.scad.
+// Example: load cell variants.
 
 include <../load_cells.scad>;
 

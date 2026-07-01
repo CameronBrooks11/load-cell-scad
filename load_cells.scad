@@ -5,9 +5,8 @@
  * (c) 2021 fnh, hendrich@informatik.uni-hamburg.de
  * (c) 2025 ckb, cbrook49@uwo.ca
  *
- * NopSCADlib-style vitamin data file: each variant is a named row constant,
- * collected into the `load_cells` list. The drawing module and accessors live
- * in `load_cell.scad`, which is pulled in by the `use` at the bottom.
+ * Variant data. Each variant is a named row, collected into the load_cells
+ * list. The drawing module lives in load_cell.scad (used at the bottom).
  *
  * Row format:
  *   [ name,

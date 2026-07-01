@@ -1,5 +1,4 @@
-// Example: load-cell amplifier boards.
-// New NopSCADlib-style API: pass a data-row constant from amplifier_boards.scad.
+// Example: amplifier boards.
 
 include <../amplifier_boards.scad>;
 

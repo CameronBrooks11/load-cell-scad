@@ -5,9 +5,8 @@
  * (c) 2021 fnh, hendrich@informatik.uni-hamburg.de
  * (c) 2025 ckb, cbrook49@uwo.ca
  *
- * NopSCADlib-style vitamin: this singular file holds the accessors and the
- * drawing module; the data lives in `amplifier_boards.scad`, which `use`s this
- * file. Draw a board by passing a row, e.g. `amplifier_board(AMP_HX711_generic)`.
+ * Accessors and drawing module. Variant data is in amplifier_boards.scad.
+ * Draw a board by passing a row: amplifier_board(AMP_HX711_generic).
  */
 
 //

@@ -5,9 +5,8 @@
  * (c) 2021 fnh, hendrich@informatik.uni-hamburg.de
  * (c) 2025 ckb, cbrook49@uwo.ca
  *
- * NopSCADlib-style vitamin data file: each board is a named row constant,
- * collected into the `amplifier_boards` list. The drawing module and accessors
- * live in `amplifier_board.scad`, pulled in by the `use` at the bottom.
+ * Variant data. Each board is a named row, collected into the amplifier_boards
+ * list. The drawing module lives in amplifier_board.scad (used at the bottom).
  *
  * Row format:
  *   [ name,
