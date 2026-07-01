@@ -1,126 +1,30 @@
-/** amplifier_boards.scad
- *
- * basic geometric model of common load_cell / strain_gage sensors
- * and amplifier boards.
+/**
+ * @file amplifier_boards.scad
+ * @brief Data table of load-cell amplifier board variants.
  *
  * (c) 2021 fnh, hendrich@informatik.uni-hamburg.de
  * (c) 2025 ckb, cbrook49@uwo.ca
+ *
+ * NopSCADlib-style vitamin data file: each board is a named row constant,
+ * collected into the `amplifier_boards` list. The drawing module and accessors
+ * live in `amplifier_board.scad`, pulled in by the `use` at the bottom.
+ *
+ * Row format:
+ *   [ name,
+ *     pcb_dims,     // [ length, width, height ]
+ *     colour,       // PCB substrate colour
+ *     chip_dims,    // [ length, width, height ]
+ *     headers,      // list of header blocks, each [ x, n_pins, block_height ]
+ *     mount_holes ] // list of mounting holes, each [ x, y, diameter ]
  */
 
-/** hx711 amplifier board for load cells
- * @param {bool} headers - include headers for load cell connection
- * @param {number} header_pin_length - length of the header pins
- */
-module generic_hx711_load_cell_amp(headers = true, header_pin_length = 8)
-{
-    length = 33.5;
-    width = 20.5;
-    height = 1.5;
-    header_y = 2.54;
-    header_x = 2;
-    header_z = 2;
+//                        name              pcb_dims             colour        chip_dims      headers                                  mount_holes
+// Generic HX711 breakout: 6-pin + 4-pin headers, two M3 mounting bores.
+AMP_HX711_generic  = [ "HX711 generic",  [ 33.5, 20.5, 1.5 ], "darkgreen", [ 4.5, 10, 1 ], [ [ -13.75, 6, 2 ], [ 12.25, 4, 2 ] ], [ [ 12.175, 7.675, 3.15 ], [ 12.175, -7.675, 3.15 ] ] ];
 
-    difference()
-    {
-        union()
-        {
-            // main pcb
-            color("darkgreen") translate([ 0, 0, height / 2 ]) cube([ length, width, height ], center = true);
-            // hx 711 chip
-            color("black") translate([ 0, 0, height + 0.5 ]) cube([ 4.5, 10.0, 1.0 ], center = true);
+// SparkFun HX711 breakout: two symmetric 5-pin headers, no mounting holes.
+AMP_HX711_sparkfun = [ "HX711 SparkFun", [ 31.2, 23.4, 1.6 ], "darkred",   [ 4.5, 10, 1 ], [ [ -14.33, 5, 5.05 ], [ 14.33, 5, 5.05 ] ], [] ];
 
-            if (headers)
-            {
-                color("black") translate([ -length / 2 + 3, 0, height + header_z / 2 ])
-                    cube([ header_y, 6 * header_y, header_z ], center = true);
-                color("black") translate([ length / 2 - 4.5, 0, height + header_z / 2 ])
-                    cube([ header_y, 5 * header_y, header_z ], center = true);
-            }
-        }
+amplifier_boards = [ AMP_HX711_generic, AMP_HX711_sparkfun ];
 
-        // two M3 mounting bores d=3.15
-        dd = 3.15;
-        translate([ length / 2 - 3.0 - dd / 2, width / 2 - 1.0 - dd / 2, -0.1 ])
-            cylinder(d = dd, h = height + 0.2, center = false, $fn = 20);
-        translate([ length / 2 - 3.0 - dd / 2, -width / 2 + 1.0 + dd / 2, -0.1 ])
-            cylinder(d = dd, h = height + 0.2, center = false, $fn = 20);
-
-        for (i = [ -1.5, -0.5, 0.5, 1.5 ])
-        {
-            dy = i * header_y;
-            translate([ length / 2 - 4.5, dy, -0.2 ])
-                cylinder(d = 1.0, h = height + header_z + 1, center = false, $fn = 20);
-        }
-        for (i = [ -2.5, -1.5, -0.5, 0.5, 1.5, 2.5 ])
-        {
-            dy = i * header_y;
-            translate([ -length / 2 + 3.0, dy, -0.2 ])
-                cylinder(d = 1.0, h = height + header_z + 1, center = false, $fn = 20);
-        }
-    } // difference
-
-    if (header_pin_length > 0)
-    {
-        for (i = [ -1.5, -0.5, 0.5, 1.5 ])
-        {
-            dy = i * header_y;
-            translate([ length / 2 - 4.5, dy, -0.2 ])
-                cylinder(d = 0.8, h = header_pin_length, center = false, $fn = 20);
-        }
-        for (i = [ -2.5, -1.5, -0.5, 0.5, 1.5, 2.5 ])
-        {
-            dy = i * header_y;
-            translate([ -length / 2 + 3.0, dy, -0.2 ])
-                cylinder(d = 0.8, h = header_pin_length, center = false, $fn = 20);
-        }
-    }
-}
-
-/** hx711 amplifier board for load cells
- * @param {bool} headers - include headers for load cell connection
- * @param {number} header_pin_length - length of the header pins
- */
-module sparkfun_hx711_load_cell_amp(headers = true, header_pin_length = 10)
-{
-    length = 31.2;
-    width = 23.4;
-    height = 1.6;
-    header_y = 2.54;
-    header_x = length / 2 - header_y / 2;
-    header_z = 5.05;
-
-    difference()
-    {
-        union()
-        {
-            // main pcb
-            color("darkred") translate([ 0, 0, height / 2 ]) cube([ length, width, height ], center = true);
-            // hx 711 chip
-            color("black") translate([ 0, 0, height + 0.5 ]) cube([ 4.5, 10.0, 1.0 ], center = true);
-            if (headers)
-            {
-                color("black") translate([ -header_x, 0, height + header_z / 2 ])
-                    cube([ header_y, 5 * header_y, header_z ], center = true);
-                color("black") translate([ +header_x, 0, height + header_z / 2 ])
-                    cube([ header_y, 5 * header_y, header_z ], center = true);
-            }
-        }
-
-        for (i = [ -2, -1, 0, 1, 2 ])
-        {
-            dy = i * header_y;
-            translate([ -header_x, dy, -0.5 ]) cylinder(d = 1.0, h = height + header_z + 1, center = false, $fn = 20);
-            translate([ +header_x, dy, -0.5 ]) cylinder(d = 1.0, h = height + header_z + 1, center = false, $fn = 20);
-        }
-    } // difference
-
-    if (header_pin_length > 0)
-    {
-        for (i = [ -2, -1, 0, 1, 2 ])
-        {
-            dy = i * header_y;
-            translate([ -header_x, dy, -0.2 ]) cylinder(d = 0.8, h = header_pin_length, center = false, $fn = 20);
-            translate([ +header_x, dy, -0.2 ]) cylinder(d = 0.8, h = header_pin_length, center = false, $fn = 20);
-        }
-    }
-} // sparkfun_hx711_load_cell_amp
+use <amplifier_board.scad>
