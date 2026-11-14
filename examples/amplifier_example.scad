@@ -1,8 +1,8 @@
-// Example: amplifier boards.
+// Every HX711 amplifier board in the library, side by side.
+// It draws each row of the amplifier_boards list, so a row added there appears here too.
 
 include <../amplifier_boards.scad>;
 
 spacing = 25;
 
-amplifier_board(AMP_HX711_generic);
-translate([ 0, spacing, 0 ]) amplifier_board(AMP_HX711_sparkfun);
+for (i = [0:len(amplifier_boards) - 1]) translate([0, i * spacing, 0]) amplifier_board(amplifier_boards[i]);

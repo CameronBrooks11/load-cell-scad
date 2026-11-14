@@ -1,11 +1,8 @@
-// Example: load cell variants.
+// Every load cell in the library, side by side.
+// It draws each row of the load_cells list, so a row added there appears here too.
 
 include <../load_cells.scad>;
 
 spacing = 25;
 
-translate([ 0, spacing * 0, 0 ]) load_cell(LC_TAL221);
-translate([ 0, spacing * 1, 0 ]) load_cell(LC_TAL220B);
-translate([ 0, spacing * 2, 0 ]) load_cell(LC_TAL220);
-translate([ 0, spacing * 3, 0 ]) load_cell(LC_komputer_10kg);
-translate([ 0, spacing * 4, 0 ]) load_cell(LC_komputer_5kg);
+for (i = [0:len(load_cells) - 1]) translate([0, i * spacing, 0]) load_cell(load_cells[i]);
