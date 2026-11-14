@@ -64,6 +64,10 @@ difference() {
 }
 ```
 
+[`examples/scale_mount.scad`](examples/scale_mount.scad) builds a whole
+single-bar scale this way: a base and a platform, each bolted to one end of
+the cell, for any cell in the library.
+
 Load cells: `lc_name`, `lc_cell_dims`, `lc_sensor_dims`, `lc_center_cutout`,
 `lc_screw_holes`, `lc_side_cuts`. Boards: `amp_name`, `amp_pcb`,
 `amp_colour`, `amp_chip`, `amp_headers`, `amp_mount_holes`, and
