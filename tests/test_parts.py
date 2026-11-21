@@ -10,7 +10,7 @@ bar's end, its sides and the bores; and that the gauges cover the bending
 section. For each amplifier board it checks its size, that it renders as
 the board plus one loose pin per header position, that every pin passes
 through its hole without touching, and that the mounting holes go through
-at their stated diameter.
+at their stated diameter. Any error or warning from a render fails the run.
 """
 
 import json
@@ -25,11 +25,20 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROBE = os.path.join(ROOT, "tests", "probe.scad")
 
 
+ERRORS = []
+
+
 def run(openscad, out, defines, export="binstl"):
     cmd = [openscad, "--hardwarnings", "--export-format", export, "-o", out]
     for name, value in defines.items():
         cmd += ["-D", f"{name}={value}"]
-    return subprocess.run(cmd + [PROBE], capture_output=True, text=True)
+    result = subprocess.run(cmd + [PROBE], capture_output=True, text=True)
+    # A failed assert leaves the exit status at 0 and the top level empty, which
+    # touches() reads as "clear", so any error or warning fails the run. An echo
+    # export prints them into its file, not to stderr.
+    text = result.stderr + (open(out).read() if export == "echo" and os.path.exists(out) else "")
+    ERRORS.extend(f"{defines}: {l}" for l in text.splitlines() if l.startswith(("ERROR", "WARNING")))
+    return result
 
 
 def mesh(path):
@@ -148,6 +157,7 @@ def main():
                 report(f"{name}: the mounting holes go through at their diameter", through and sized,
                        f"under-size pin {'passes' if through else 'blocked'}, over-size {'blocked' if sized else 'passes'}")
 
+    report("no render printed an error or warning", not ERRORS, "; ".join(ERRORS[:3]) or "none")
     print("all checks passed" if not failures else f"{len(failures)} failed")
     sys.exit(1 if failures else 0)
 

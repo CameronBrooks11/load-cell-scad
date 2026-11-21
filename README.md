@@ -88,8 +88,11 @@ checks that:
 - the gauges cover the bending section.
 
 For each board it checks its size, that every header pin passes through its
-hole, and that the mounting holes go through at their stated size.
+hole, and that the mounting holes go through at their stated size. Any
+error or warning from a render fails the run.
 
+`just check` checks the `.scad` files are formatted with
+[topiary](https://github.com/tweag/topiary) 0.8.0; `just fmt` formats them.
 `just images` renders the pictures.
 
 ## Licence
